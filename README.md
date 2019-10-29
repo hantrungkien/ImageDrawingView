@@ -20,7 +20,7 @@ allprojects {
 ````
 module/build.gradle
 ````gradle
-implementation 'com.github.hantrungkien:ImageDrawingView:1.0.0'
+implementation 'com.github.hantrungkien:ImageDrawingView:x.y.z'
 ````
 
 #### Feature
