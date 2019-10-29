@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="FreeDrawView">
-        <attr name="paintColor" format="color" />
-        <attr name="paintWidth" format="dimension" />
-        <attr name="paintAlpha" format="integer" />
-        <attr name="resizeBehaviour" format="enum">
+        <attr name="drawingPaintColor" format="color" />
+        <attr name="drawingPaintWidth" format="dimension" />
+        <attr name="drawingPaintAlpha" format="integer" />
+        <attr name="drawingResizeBehaviour" format="enum">
             <enum name="clear" value="0" />
             <enum name="fitXY" value="1" />
             <enum name="crop" value="2" />
         </attr>
     </declare-styleable>
     <declare-styleable name="StickerView">
-        <attr name="showIcons" format="boolean" />
-        <attr name="showBorder" format="boolean" />
-        <attr name="bringToFrontCurrentSticker" format="boolean" />
-        <attr name="borderColor" format="color" />
-        <attr name="borderAlpha" format="integer" />
+        <attr name="drawingShowIcons" format="boolean" />
+        <attr name="drawingShowBorder" format="boolean" />
+        <attr name="drawingBringToFrontCurrentSticker" format="boolean" />
+        <attr name="drawingBorderColor" format="color" />
+        <attr name="drawingBorderAlpha" format="integer" />
     </declare-styleable>
 </resources>

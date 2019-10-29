@@ -518,20 +518,20 @@ public class FreeDrawView extends View implements View.OnTouchListener, OnDrawBi
     private void initPaints(TypedArray a) {
         mCurrentPaint = FreeDrawHelper.createPaint();
 
-        mCurrentPaint.setColor(a != null ? a.getColor(R.styleable.FreeDrawView_paintColor,
+        mCurrentPaint.setColor(a != null ? a.getColor(R.styleable.FreeDrawView_drawingPaintColor,
                 mPaintColor) : mPaintColor);
         mCurrentPaint.setAlpha(a != null ?
-                a.getInt(R.styleable.FreeDrawView_paintAlpha, mPaintAlpha)
+                a.getInt(R.styleable.FreeDrawView_drawingPaintAlpha, mPaintAlpha)
                 : mPaintAlpha);
         mCurrentPaint.setStrokeWidth(a != null ?
-                a.getDimensionPixelSize(R.styleable.FreeDrawView_paintWidth,
+                a.getDimensionPixelSize(R.styleable.FreeDrawView_drawingPaintWidth,
                         (int) FreeDrawHelper.convertDpToPixels(DEFAULT_STROKE_WIDTH))
                 : FreeDrawHelper.convertDpToPixels(DEFAULT_STROKE_WIDTH));
 
         FreeDrawHelper.setupStrokePaint(mCurrentPaint);
 
         if (a != null) {
-            int resizeBehaviour = a.getInt(R.styleable.FreeDrawView_resizeBehaviour, -1);
+            int resizeBehaviour = a.getInt(R.styleable.FreeDrawView_drawingResizeBehaviour, -1);
             mResizeBehaviour =
                     resizeBehaviour == 0 ? ResizeBehaviour.CLEAR :
                             resizeBehaviour == 1 ? ResizeBehaviour.FIT_XY :

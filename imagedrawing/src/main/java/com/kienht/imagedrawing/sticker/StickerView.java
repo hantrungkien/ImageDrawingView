@@ -125,16 +125,16 @@ public class StickerView extends FrameLayout {
         TypedArray a = null;
         try {
             a = context.obtainStyledAttributes(attrs, R.styleable.StickerView);
-            showIcons = a.getBoolean(R.styleable.StickerView_showIcons, true);
-            showBorder = a.getBoolean(R.styleable.StickerView_showBorder, true);
+            showIcons = a.getBoolean(R.styleable.StickerView_drawingShowIcons, true);
+            showBorder = a.getBoolean(R.styleable.StickerView_drawingShowBorder, true);
             bringToFrontCurrentSticker =
-                    a.getBoolean(R.styleable.StickerView_bringToFrontCurrentSticker, true);
+                    a.getBoolean(R.styleable.StickerView_drawingBringToFrontCurrentSticker, true);
 
             borderPaint.setAntiAlias(true);
             borderPaint.setStyle(Paint.Style.STROKE);
             borderPaint.setStrokeWidth(5f);
-            borderPaint.setColor(a.getColor(R.styleable.StickerView_borderColor, Color.BLACK));
-            borderPaint.setAlpha(a.getInteger(R.styleable.StickerView_borderAlpha, 255));
+            borderPaint.setColor(a.getColor(R.styleable.StickerView_drawingBorderColor, Color.BLACK));
+            borderPaint.setAlpha(a.getInteger(R.styleable.StickerView_drawingBorderAlpha, 255));
             borderPaint.setPathEffect(new DashPathEffect(new float[]{15, 20}, 0));
 
             borderIconPaint.setAntiAlias(true);
