@@ -1,11 +1,20 @@
 package com.kienht.imagedrawing
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import androidx.core.view.isVisible
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kienht.imagedrawing.drawing.OnCreateBitmapCallback
+import java.io.File
+import java.io.FileOutputStream
 
 /**
  * @author kienht
@@ -14,21 +23,70 @@ import com.kienht.imagedrawing.drawing.OnCreateBitmapCallback
  */
 class MainActivity : AppCompatActivity() {
 
+    lateinit var drawImageView: ImageDrawingView
+    lateinit var imageTest: ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val drawImageView = findViewById<ImageDrawingView>(R.id.image_drawing)
+        drawImageView = findViewById<ImageDrawingView>(R.id.image_drawing)
         drawImageView.loadImage(R.drawable.iphonex)
-
         drawImageView.onCreateBitmapCallback = object : OnCreateBitmapCallback {
             override fun onBitmapCreated(bitmap: Bitmap?) {
+                if (bitmap != null) {
+                    val path = getScreenshotPath()
+                        .takeUnless { it.isEmpty() }
+                        ?.let { bitmap.saveToFile(it) }
+                        ?.absolutePath
+                    Glide.with(imageTest).clear(imageTest)
+                    Glide.with(imageTest)
+                        .load(path)
+                        .dontAnimate()
+                        .fitCenter()
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .into(imageTest)
+                }
             }
 
             override fun onBitmapCreationError() {
             }
         }
 
-//        drawImageView.getBitmap()
+        imageTest = findViewById<ImageView>(R.id.image_test)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_edit_photo, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.action_done -> {
+                drawImageView.getBitmap()
+            }
+        }
+        return true
+    }
+}
+
+fun Context.getScreenshotPath(): String {
+    val folderPath = "${cacheDir}/screenshot"
+    val folder = File(folderPath)
+    if (!folder.exists()) {
+        folder.mkdirs()
+    }
+    return "${folderPath}/${System.currentTimeMillis()}.png"
+}
+
+fun Bitmap.saveToFile(path: String): File? {
+    return try {
+        val file = File(path)
+        file.createNewFile()
+        FileOutputStream(file).use { out -> this.compress(Bitmap.CompressFormat.PNG, 100, out) }
+        file
+    } catch (e: Exception) {
+        null
     }
 }

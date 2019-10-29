@@ -14,7 +14,7 @@
         android:layout_weight="1">
 
         <EditText
-            android:id="@+id/input_fake"
+            android:id="@+id/drawing_input_fake"
             android:layout_width="1dp"
             android:layout_height="1dp"
             android:background="@android:color/transparent"
@@ -22,16 +22,15 @@
             android:textSize="12sp" />
 
         <com.kienht.imagedrawing.sticker.StickerView
-            android:id="@+id/sticker_view"
-            android:layout_width="match_parent"
+            android:id="@+id/drawing_sticker_view"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@android:color/black"
             android:orientation="vertical">
 
             <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="match_parent"
+                android:id="@+id/drawing_image_view"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"
@@ -39,7 +38,7 @@
 
             <com.kienht.imagedrawing.drawing.FreeDrawView
                 android:id="@+id/free_draw_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center" />
 
@@ -73,7 +72,7 @@
                     android:textSize="@dimen/_14sp" />
 
                 <SeekBar
-                    android:id="@+id/slider_thickness"
+                    android:id="@+id/drawing_slider_thickness"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10dp" />
@@ -94,7 +93,7 @@
                     android:textSize="@dimen/_14sp" />
 
                 <SeekBar
-                    android:id="@+id/slider_alpha"
+                    android:id="@+id/drawing_slider_alpha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_10dp" />
@@ -109,7 +108,7 @@
             android:weightSum="5">
 
             <ImageButton
-                android:id="@+id/button_undo"
+                android:id="@+id/drawing_button_undo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_weight="1"
@@ -117,7 +116,7 @@
                 android:src="@drawable/ic_draw_undo_white" />
 
             <ImageButton
-                android:id="@+id/button_redo"
+                android:id="@+id/drawing_button_redo"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_weight="1"
@@ -125,7 +124,7 @@
                 android:src="@drawable/ic_draw_redo_white" />
 
             <ImageButton
-                android:id="@+id/button_clear_all"
+                android:id="@+id/drawing_button_clear_all"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_weight="1"
@@ -133,7 +132,7 @@
                 android:src="@drawable/ic_draw_delete_forever_white" />
 
             <ImageButton
-                android:id="@+id/button_color"
+                android:id="@+id/drawing_button_color"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_weight="1"
@@ -141,7 +140,7 @@
                 android:src="@drawable/ic_draw_color_lens_white" />
 
             <ImageButton
-                android:id="@+id/button_text"
+                android:id="@+id/drawing_button_text"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/_50dp"
                 android:layout_weight="1"

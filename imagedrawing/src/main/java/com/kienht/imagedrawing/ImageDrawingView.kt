@@ -41,7 +41,7 @@ class ImageDrawingView @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
     defStyleAttr: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr), OnDrawBitmapEventListener,
+) : FrameLayout(context, attrs, defStyleAttr),
     SeekBar.OnSeekBarChangeListener,
     OnTouchDrawViewListener {
 
@@ -69,10 +69,10 @@ class ImageDrawingView @JvmOverloads constructor(
 
     init {
         inflate(context, R.layout.draw_image_view, this)
-        stickerView = findViewById(R.id.sticker_view)
-        imageView = findViewById(R.id.image_view)
+        stickerView = findViewById(R.id.drawing_sticker_view)
+        imageView = findViewById(R.id.drawing_image_view)
         freeDrawView = findViewById(R.id.free_draw_view)
-        inputFake = findViewById(R.id.input_fake)
+        inputFake = findViewById(R.id.drawing_input_fake)
 
         inputFake.isCursorVisible = false
         inputFake.doAfterTextChanged {
@@ -82,19 +82,18 @@ class ImageDrawingView @JvmOverloads constructor(
         val colors =
             intArrayOf(BLACK, WHITE, RED, GREEN, BLUE, CYAN, YELLOW, MAGENTA, *ColorPalette.Primary)
 
-        freeDrawView.setOnDrawCreatorListener(this)
         freeDrawView.setOnTouchDrawViewListener(this)
 
-        val undoButton = findViewById<ImageButton>(R.id.button_undo)
+        val undoButton = findViewById<ImageButton>(R.id.drawing_button_undo)
         undoButton.setOnClickListener { freeDrawView.undoLast() }
-        val redoButton = findViewById<ImageButton>(R.id.button_redo)
+        val redoButton = findViewById<ImageButton>(R.id.drawing_button_redo)
         redoButton.setOnClickListener { freeDrawView.redoLast() }
-        val clearAllButton = findViewById<ImageButton>(R.id.button_clear_all)
+        val clearAllButton = findViewById<ImageButton>(R.id.drawing_button_clear_all)
         clearAllButton.setOnClickListener {
             freeDrawView.clearDrawAndHistory()
             stickerView.removeAllStickers()
         }
-        val colorButton = findViewById<ImageButton>(R.id.button_color)
+        val colorButton = findViewById<ImageButton>(R.id.drawing_button_color)
         colorButton.setOnClickListener {
             MaterialDialog(context, BottomSheet(LayoutMode.WRAP_CONTENT)).show {
                 if (context is AppCompatActivity) {
@@ -110,7 +109,7 @@ class ImageDrawingView @JvmOverloads constructor(
                 }
             }
         }
-        val textButton = findViewById<ImageButton>(R.id.button_text)
+        val textButton = findViewById<ImageButton>(R.id.drawing_button_text)
         textButton.setOnClickListener {
             val textSticker = TextSticker(context)
                 .apply {
@@ -162,13 +161,13 @@ class ImageDrawingView @JvmOverloads constructor(
             }
         }
 
-        alphaSeekBar = findViewById(R.id.slider_alpha)
+        alphaSeekBar = findViewById(R.id.drawing_slider_alpha)
         alphaSeekBar.max = (ALPHA_MAX - ALPHA_MIN) / ALPHA_STEP
         val alphaProgress = (freeDrawView.paintAlpha - ALPHA_MIN) / ALPHA_STEP
         alphaSeekBar.progress = alphaProgress
         alphaSeekBar.setOnSeekBarChangeListener(this)
 
-        thicknessSeekBar = findViewById(R.id.slider_thickness)
+        thicknessSeekBar = findViewById(R.id.drawing_slider_thickness)
         thicknessSeekBar.max = (THICKNESS_MAX - THICKNESS_MIN) / THICKNESS_STEP
         val thicknessProgress = ((freeDrawView.paintWidth - THICKNESS_MIN) / THICKNESS_STEP).toInt()
         thicknessSeekBar.progress = thicknessProgress
@@ -179,12 +178,15 @@ class ImageDrawingView @JvmOverloads constructor(
                 imageView.setImageBitmap(bitmap)
                 post {
                     val imageBound = getImageBounds(imageView)
-                    val params2 = freeDrawView.layoutParams
-                    params2.width = imageBound.width().toInt()
-                    params2.height = imageBound.height().toInt()
-                    freeDrawView.layoutParams = params2
+                    val freeDrawViewParams = freeDrawView.layoutParams
+                    freeDrawViewParams.width = imageBound.width().toInt()
+                    freeDrawViewParams.height = imageBound.height().toInt()
+                    freeDrawView.layoutParams = freeDrawViewParams
 
-                    stickerView.layoutParams.width = imageBound.width().toInt()
+                    val stickerParams = stickerView.layoutParams
+                    stickerParams.width = imageBound.width().toInt()
+                    stickerParams.height = imageBound.height().toInt()
+                    freeDrawView.layoutParams = stickerParams
                 }
             }
 
@@ -199,28 +201,9 @@ class ImageDrawingView @JvmOverloads constructor(
         super.onDetachedFromWindow()
     }
 
-    override fun onDrawCreated(bitmap: Bitmap) {
-        var imageBitmap: Bitmap? = null
-        val drawable = imageView.drawable
-        if (drawable is BitmapDrawable) {
-            imageBitmap = drawable.bitmap
-        }
-        if (imageBitmap != null && onCreateBitmapCallback != null) {
-            var finalBitmap = overlay(imageBitmap, bitmap)
-            if (stickerView.stickerCount > 0) {
-                val stickerBitmap = stickerView.createBitmap()
-                finalBitmap = overlay(finalBitmap, stickerBitmap)
-            }
-            onCreateBitmapCallback!!.onBitmapCreated(finalBitmap)
-        }
-    }
 
     override fun onDrawViewTouched() {
         stickerView.setTouchOutside()
-    }
-
-    override fun onDrawCreationError() {
-        onCreateBitmapCallback?.onBitmapCreationError()
     }
 
     override fun onProgressChanged(seekBar: SeekBar, progress: Int, b: Boolean) {
@@ -236,7 +219,12 @@ class ImageDrawingView @JvmOverloads constructor(
     override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
 
     fun getBitmap() {
-        freeDrawView.getDrawBitmap()
+        try {
+            val bitmap = stickerView.createBitmap()
+            onCreateBitmapCallback!!.onBitmapCreated(bitmap)
+        } catch (e: OutOfMemoryError) {
+            onCreateBitmapCallback!!.onBitmapCreationError()
+        }
     }
 
     fun loadImage(path: String) {
