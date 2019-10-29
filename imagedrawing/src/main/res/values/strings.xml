@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Image Drawing</string>
+    <string name="stroke_width">Stroke Width</string>
+    <string name="stroke_alpha">Stroke Alpha</string>
+</resources>
