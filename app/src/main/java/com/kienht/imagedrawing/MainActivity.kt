@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val drawImageView = findViewById<ImageDrawingView>(R.id.image_drawing)
+        drawImageView.loadImage(R.drawable.iphonex)
 
         drawImageView.onCreateBitmapCallback = object : OnCreateBitmapCallback {
             override fun onBitmapCreated(bitmap: Bitmap?) {
@@ -27,5 +28,7 @@ class MainActivity : AppCompatActivity() {
             override fun onBitmapCreationError() {
             }
         }
+
+//        drawImageView.getBitmap()
     }
 }

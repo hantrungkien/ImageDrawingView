@@ -192,8 +192,6 @@ class ImageDrawingView @JvmOverloads constructor(
 
             }
         }
-
-        loadImage(R.drawable.iphonex)
     }
 
     override fun onDetachedFromWindow() {
