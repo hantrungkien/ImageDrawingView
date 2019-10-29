@@ -1,5 +1,4 @@
-# Awesome-Input-Layout
-Awesome Input Layout is an android library to display layout with multi EditText that can be rotated, autofit, zoom, delete within the app.
+# Image Drawing View
 
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Platform](https://img.shields.io/badge/platform-android-green.svg)](http://developer.android.com/index.html)
