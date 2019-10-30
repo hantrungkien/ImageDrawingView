@@ -72,8 +72,6 @@ class MainActivity : AppCompatActivity() {
                 .fitCenter()
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
                 .into(imageTest)
-
-
         }
     }
 }
