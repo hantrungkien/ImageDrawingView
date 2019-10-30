@@ -173,7 +173,6 @@ class ImageDrawingView @JvmOverloads constructor(
 
         glideCustomerTarget = object : CustomTarget<Bitmap>() {
             override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
-                loadingLayout.isVisible = false
                 imageView.setImageBitmap(bitmap)
                 post {
                     val imageBound = getImageBounds(imageView)
@@ -186,6 +185,7 @@ class ImageDrawingView @JvmOverloads constructor(
                     stickerParams.width = imageBound.width().toInt()
                     stickerParams.height = imageBound.height().toInt()
                     freeDrawView.layoutParams = stickerParams
+                    loadingLayout.isVisible = false
                 }
             }
 
