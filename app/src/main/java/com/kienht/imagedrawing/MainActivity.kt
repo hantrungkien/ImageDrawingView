@@ -10,9 +10,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.core.view.isVisible
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.kienht.imagedrawing.drawing.OnCreateBitmapCallback
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 
@@ -32,26 +36,6 @@ class MainActivity : AppCompatActivity() {
 
         drawImageView = findViewById<ImageDrawingView>(R.id.image_drawing)
         drawImageView.loadImage(R.drawable.iphonex)
-        drawImageView.onCreateBitmapCallback = object : OnCreateBitmapCallback {
-            override fun onBitmapCreated(bitmap: Bitmap?) {
-                if (bitmap != null) {
-                    val path = getScreenshotPath()
-                        .takeUnless { it.isEmpty() }
-                        ?.let { bitmap.saveToFile(it) }
-                        ?.absolutePath
-                    Glide.with(imageTest).clear(imageTest)
-                    Glide.with(imageTest)
-                        .load(path)
-                        .dontAnimate()
-                        .fitCenter()
-                        .diskCacheStrategy(DiskCacheStrategy.ALL)
-                        .into(imageTest)
-                }
-            }
-
-            override fun onBitmapCreationError() {
-            }
-        }
 
         imageTest = findViewById<ImageView>(R.id.image_test)
     }
@@ -64,10 +48,33 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.action_done -> {
-                drawImageView.getBitmap()
+                getBitmap()
             }
         }
         return true
+    }
+
+    private fun getBitmap() {
+        lifecycleScope.launch {
+            drawImageView.showLoading()
+            val path = withContext(Dispatchers.IO) {
+                val bitmap = drawImageView.createBitmap()
+                getScreenshotPath()
+                    .takeUnless { it.isEmpty() }
+                    ?.let { bitmap.saveToFile(it) }
+                    ?.absolutePath
+            }
+            drawImageView.hideLoading()
+            Glide.with(imageTest).clear(imageTest)
+            Glide.with(imageTest)
+                .load(path)
+                .dontAnimate()
+                .fitCenter()
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .into(imageTest)
+
+
+        }
     }
 }
 

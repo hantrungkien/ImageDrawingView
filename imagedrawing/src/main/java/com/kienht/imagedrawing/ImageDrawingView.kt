@@ -4,18 +4,17 @@ import android.content.Context
 import android.graphics.*
 
 import android.graphics.Color.*
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.text.Layout
 import android.util.AttributeSet
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.annotation.DrawableRes
+import androidx.annotation.MainThread
+import androidx.annotation.WorkerThread
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.widget.addTextChangedListener
+import androidx.core.view.isVisible
 import androidx.core.widget.doAfterTextChanged
-import androidx.core.widget.doOnTextChanged
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -28,8 +27,6 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.kienht.imagedrawing.drawing.FreeDrawView
-import com.kienht.imagedrawing.drawing.OnCreateBitmapCallback
-import com.kienht.imagedrawing.drawing.OnDrawBitmapEventListener
 import com.kienht.imagedrawing.sticker.*
 
 /**
@@ -57,13 +54,13 @@ class ImageDrawingView @JvmOverloads constructor(
         private const val ALPHA_MIN = 0
     }
 
-    var onCreateBitmapCallback: OnCreateBitmapCallback? = null
     private val stickerView: StickerView
     private val imageView: ImageView
     private val freeDrawView: FreeDrawView
     private val alphaSeekBar: SeekBar
     private val thicknessSeekBar: SeekBar
     private val inputFake: EditText
+    private val loadingLayout: FrameLayout
 
     private val glideCustomerTarget: CustomTarget<Bitmap>
 
@@ -72,6 +69,7 @@ class ImageDrawingView @JvmOverloads constructor(
         stickerView = findViewById(R.id.drawing_sticker_view)
         imageView = findViewById(R.id.drawing_image_view)
         freeDrawView = findViewById(R.id.free_draw_view)
+        loadingLayout = findViewById(R.id.layout_loading)
         inputFake = findViewById(R.id.drawing_input_fake)
 
         inputFake.isCursorVisible = false
@@ -175,6 +173,7 @@ class ImageDrawingView @JvmOverloads constructor(
 
         glideCustomerTarget = object : CustomTarget<Bitmap>() {
             override fun onResourceReady(bitmap: Bitmap, transition: Transition<in Bitmap>?) {
+                loadingLayout.isVisible = false
                 imageView.setImageBitmap(bitmap)
                 post {
                     val imageBound = getImageBounds(imageView)
@@ -218,16 +217,12 @@ class ImageDrawingView @JvmOverloads constructor(
 
     override fun onStopTrackingTouch(seekBar: SeekBar) = Unit
 
-    fun getBitmap() {
-        try {
-            val bitmap = stickerView.createBitmap()
-            onCreateBitmapCallback!!.onBitmapCreated(bitmap)
-        } catch (e: OutOfMemoryError) {
-            onCreateBitmapCallback!!.onBitmapCreationError()
-        }
-    }
+    @WorkerThread
+    fun createBitmap(): Bitmap = stickerView.createBitmap()
 
+    @MainThread
     fun loadImage(path: String) {
+        loadingLayout.isVisible = true
         Glide.with(imageView)
             .asBitmap()
             .load(path)
@@ -237,7 +232,9 @@ class ImageDrawingView @JvmOverloads constructor(
             .into(glideCustomerTarget)
     }
 
+    @MainThread
     fun loadImage(@DrawableRes drawable: Int) {
+        loadingLayout.isVisible = true
         Glide.with(imageView)
             .asBitmap()
             .load(drawable)
@@ -245,6 +242,16 @@ class ImageDrawingView @JvmOverloads constructor(
             .fitCenter()
             .diskCacheStrategy(DiskCacheStrategy.ALL)
             .into(glideCustomerTarget)
+    }
+
+    @MainThread
+    fun showLoading() {
+        loadingLayout.isVisible = true
+    }
+
+    @MainThread
+    fun hideLoading() {
+        loadingLayout.isVisible = false
     }
 
     private fun overlay(bmp1: Bitmap, bmp2: Bitmap): Bitmap {

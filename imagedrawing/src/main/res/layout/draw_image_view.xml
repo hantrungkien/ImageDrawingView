@@ -1,152 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/black"
     android:focusable="true"
-    android:focusableInTouchMode="true"
-    android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:layout_weight="1">
-
-        <EditText
-            android:id="@+id/drawing_input_fake"
-            android:layout_width="1dp"
-            android:layout_height="1dp"
-            android:background="@android:color/transparent"
-            android:textColor="@android:color/transparent"
-            android:textSize="12sp" />
-
-        <com.kienht.imagedrawing.sticker.StickerView
-            android:id="@+id/drawing_sticker_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <ImageView
-                android:id="@+id/drawing_image_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter" />
-
-            <com.kienht.imagedrawing.drawing.FreeDrawView
-                android:id="@+id/free_draw_view"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
-
-        </com.kienht.imagedrawing.sticker.StickerView>
-    </FrameLayout>
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10dp"
-            android:weightSum="2">
+            android:layout_height="0dp"
+            android:layout_gravity="center"
+            android:layout_weight="1">
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
+            <EditText
+                android:id="@+id/drawing_input_fake"
+                android:layout_width="1dp"
+                android:layout_height="1dp"
+                android:background="@android:color/transparent"
+                android:textColor="@android:color/transparent"
+                android:textSize="12sp" />
+
+            <com.kienht.imagedrawing.sticker.StickerView
+                android:id="@+id/drawing_sticker_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="vertical">
 
-                <TextView
+                <ImageView
+                    android:id="@+id/drawing_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/stroke_width"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14sp" />
+                    android:layout_gravity="center"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter" />
 
-                <SeekBar
-                    android:id="@+id/drawing_slider_thickness"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10dp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical">
-
-                <TextView
+                <com.kienht.imagedrawing.drawing.FreeDrawView
+                    android:id="@+id/free_draw_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/stroke_alpha"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/_14sp" />
+                    android:layout_gravity="center" />
 
-                <SeekBar
-                    android:id="@+id/drawing_slider_alpha"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/_10dp" />
-            </LinearLayout>
-        </LinearLayout>
+            </com.kienht.imagedrawing.sticker.StickerView>
+
+        </FrameLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="@dimen/_10dp"
-            android:weightSum="5">
+            android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/drawing_button_undo"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_draw_undo_white" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10dp"
+                android:weightSum="2">
 
-            <ImageButton
-                android:id="@+id/drawing_button_redo"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_draw_redo_white" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
-            <ImageButton
-                android:id="@+id/drawing_button_clear_all"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_draw_delete_forever_white" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stroke_width"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_14sp" />
 
-            <ImageButton
-                android:id="@+id/drawing_button_color"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_draw_color_lens_white" />
+                    <SeekBar
+                        android:id="@+id/drawing_slider_thickness"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10dp" />
+                </LinearLayout>
 
-            <ImageButton
-                android:id="@+id/drawing_button_text"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/_50dp"
-                android:layout_weight="1"
-                android:background="@android:color/transparent"
-                android:src="@drawable/ic_draw_format_shapes_white" />
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/stroke_alpha"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/_14sp" />
+
+                    <SeekBar
+                        android:id="@+id/drawing_slider_alpha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/_10dp"
+                android:weightSum="5">
+
+                <ImageButton
+                    android:id="@+id/drawing_button_undo"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_draw_undo_white" />
+
+                <ImageButton
+                    android:id="@+id/drawing_button_redo"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_draw_redo_white" />
+
+                <ImageButton
+                    android:id="@+id/drawing_button_clear_all"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_draw_delete_forever_white" />
+
+                <ImageButton
+                    android:id="@+id/drawing_button_color"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_draw_color_lens_white" />
+
+                <ImageButton
+                    android:id="@+id/drawing_button_text"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/_50dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_draw_format_shapes_white" />
+            </LinearLayout>
+
         </LinearLayout>
 
     </LinearLayout>
-</LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true"
+            android:indeterminateTint="@android:color/white"
+            android:visibility="gone" />
+
+    </FrameLayout>
+
+</FrameLayout>

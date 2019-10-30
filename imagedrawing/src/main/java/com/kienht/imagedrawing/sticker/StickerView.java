@@ -22,6 +22,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.WorkerThread;
 import androidx.core.content.ContextCompat;
 import androidx.core.view.ViewCompat;
 
@@ -802,7 +803,8 @@ public class StickerView extends FrameLayout {
     }
 
     @NonNull
-    public Bitmap createBitmap() throws OutOfMemoryError {
+    @WorkerThread
+    public Bitmap createBitmap() {
         handlingSticker = null;
         Bitmap bitmap = Bitmap.createBitmap(getWidth(), getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
